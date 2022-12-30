@@ -1,6 +1,16 @@
+--Drop tables if exists
+
+DROP TABLE IF EXISTS employees,
+titles, 
+dept_emp,
+departments,
+dept_manager,
+salaries
+;
+
 -- Create table for employees
 CREATE TABLE employees (
-  emp_no INT NOT NULL,
+  emp_no INT PRIMARY KEY NOT NULL,
   emp_title_id VARCHAR(10),
   birth_date VARCHAR(10),
   first_name VARCHAR(30),
@@ -11,35 +21,35 @@ CREATE TABLE employees (
 
 -- Create table for employee titles
 CREATE TABLE titles (
-  title_id VARCHAR(10),
-  title VARCHAR(30),
+  title_id VARCHAR(10) PRIMARY KEY,
+  title VARCHAR(30)
 );
 
 -- Create table for employees by department
 CREATE TABLE dept_emp (
   emp_no INT NOT NULL,
-  dept_no VARCHAR(10),
+  dept_no VARCHAR(10)
 );
 
 
 -- Create table for departments
 CREATE TABLE departments (
-  dept_no VARCHAR(10),
-  dept_name VARCHAR(30),
+  dept_no VARCHAR(10) PRIMARY KEY,
+  dept_name VARCHAR(30)
 );
 
 
 -- Create table for department managers
 CREATE TABLE dept_manager (
-  dept_no VARCHAR(10),
-  emp_no INT,
+  dept_no VARCHAR(10) PRIMARY KEY,
+  emp_no INT
 );
 
 
 -- Create table for salaries
 CREATE TABLE salaries (
-  emp_no INT NOT NULL,
-  salary INT,
+  emp_no INT PRIMARY KEY NOT NULL,
+  salary INT
 );
 
 -- Import data for employees
