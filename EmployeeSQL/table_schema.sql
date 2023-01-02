@@ -1,89 +1,72 @@
---Drop tables if exists
 
-DROP TABLE IF EXISTS employees,
-titles, 
-dept_emp,
-departments,
-dept_manager,
-salaries
-;
-
--- Create table for employees
-CREATE TABLE employees (
-  emp_no INT PRIMARY KEY NOT NULL,
-  emp_title_id VARCHAR(10),
-  birth_date VARCHAR(10),
-  first_name VARCHAR(30),
-  last_name VARCHAR(30),
-  sex VARCHAR(5),
-  hire_date VARCHAR(10)
+CREATE TABLE "departments" (
+    "dept_no" VARCHAR   NOT NULL,
+    "dept_name" VARCHAR   NOT NULL,
+    CONSTRAINT "pk_departments" PRIMARY KEY (
+        "dept_no"
+     )
 );
 
--- Create table for employee titles
-CREATE TABLE titles (
-  title_id VARCHAR(10) PRIMARY KEY,
-  title VARCHAR(30)
+CREATE TABLE "employees" (
+    "emp_no" int NOT NULL,
+    "emp_title_id" VARCHAR NOT NULL,
+    "birth_date" DATE   NOT NULL,
+    "first_name" VARCHAR   NOT NULL,
+    "last_name" VARCHAR   NOT NULL,
+    "sex" VARCHAR   NOT NULL,
+    "hire_date" DATE   NOT NULL,
+    CONSTRAINT "pk_employees" PRIMARY KEY (
+        "emp_no"
+     )
 );
 
--- Create table for employees by department
-CREATE TABLE dept_emp (
-  emp_no INT NOT NULL,
-  dept_no VARCHAR(10)
+CREATE TABLE "dept_emp" (
+    "emp_no" int   NOT NULL,
+    "dept_no" VARCHAR   NOT NULL,
+    CONSTRAINT "pk_dept_emp" PRIMARY KEY (
+        "emp_no","dept_no"
+     )
 );
 
-
--- Create table for departments
-CREATE TABLE departments (
-  dept_no VARCHAR(10) PRIMARY KEY,
-  dept_name VARCHAR(30)
+CREATE TABLE "dept_manager" (
+    "dept_no" VARCHAR   NOT NULL,
+    "emp_no" int   NOT NULL,
+    CONSTRAINT "pk_dept_manager" PRIMARY KEY (
+        "dept_no","emp_no"
+     )
 );
 
-
--- Create table for department managers
-CREATE TABLE dept_manager (
-  dept_no VARCHAR(10) PRIMARY KEY,
-  emp_no INT
+CREATE TABLE "salaries" (
+    "emp_no" int   NOT NULL,
+    "salary" int   NOT NULL,
+    CONSTRAINT "pk_salaries" PRIMARY KEY (
+        "emp_no"
+     )
 );
 
-
--- Create table for salaries
-CREATE TABLE salaries (
-  emp_no INT PRIMARY KEY NOT NULL,
-  salary INT
+CREATE TABLE "titles" (
+    "title_id" VARCHAR   NOT NULL,
+    "title" VARCHAR   NOT NULL,
+    CONSTRAINT "pk_titles" PRIMARY KEY (
+        "title_id"
+     )
 );
 
--- Import data for employees
-COPY employees
-FROM '/Users/jennifershulyak/Desktop/Data_Bootcamp_2022/Challenges/sql-challenge/Data/employees.csv'
-DELIMITER ','
-CSV HEADER;
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
 
--- Import data for employee titles
-COPY titles
-FROM '/Users/jennifershulyak/Desktop/Data_Bootcamp_2022/Challenges/sql-challenge/Data/titles.csv'
-DELIMITER ','
-CSV HEADER;
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
 
--- Import data for employees by department
-COPY dept_emp
-FROM '/Users/jennifershulyak/Desktop/Data_Bootcamp_2022/Challenges/sql-challenge/Data/dept_emp.csv'
-DELIMITER ','
-CSV HEADER;
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
 
--- Import data for departments
-COPY departments
-FROM '/Users/jennifershulyak/Desktop/Data_Bootcamp_2022/Challenges/sql-challenge/Data/departments.csv'
-DELIMITER ','
-CSV HEADER;
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
 
--- Import data for department managers
-COPY employees
-FROM '/Users/jennifershulyak/Desktop/Data_Bootcamp_2022/Challenges/sql-challenge/Data/dept_manager.csv'
-DELIMITER ','
-CSV HEADER;
+ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
 
--- Import data for employees
-COPY salaries
-FROM '/Users/jennifershulyak/Desktop/Data_Bootcamp_2022/Challenges/sql-challenge/Data/salaries.csv'
-DELIMITER ','
-CSV HEADER;
+ALTER TABLE "employees" ADD CONSTRAINT "fk_emp_title_id" FOREIGN KEY("emp_title_id")
+REFERENCES "titles" ("title_id");
+
